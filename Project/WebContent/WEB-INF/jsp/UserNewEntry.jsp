@@ -12,7 +12,6 @@
     ユーザ名 さん     <font color="RED">ログアウト</font>
 	</div>
 		<h1>ユーザ新規登録</h1>
-
 		<br>ログインID <input type="text" name="loginid">
 		<br>パスワード <input type="text" name="password">
 		<br>パスワード確認 <input type="text" name="PasswordConfirmation">
