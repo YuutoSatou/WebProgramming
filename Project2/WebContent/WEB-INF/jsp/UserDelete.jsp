@@ -15,10 +15,7 @@
 
 		<br>ログインID : id0001
 		<br>を本当に削除してよろしいでしょうか。
-		<br><button type="button"
-		onclick="location.reload()">
-		キャンセル
-		</button>
+		<br><a href=UserListServlet>キャンセル</a>
 		<button type="button"
 		onclick="location.reload()">
 		削除

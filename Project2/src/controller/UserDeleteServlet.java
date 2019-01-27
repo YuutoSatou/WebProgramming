@@ -9,20 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.UserDao;
-import model.User;
-
 /**
- * Servlet implementation class UserDetailServlet
+ * Servlet implementation class DeleteScreen
  */
-@WebServlet("/UserDetailServlet")
-public class UserDetailServlet extends HttpServlet {
+@WebServlet("/UserDeleteServlet")
+public class UserDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserDetailServlet() {
+    public UserDeleteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,21 +31,10 @@ public class UserDetailServlet extends HttpServlet {
 		// URLからGETパラメータとしてIDを受け取る
 		String id = request.getParameter("id");
 
-		// 確認用：idをコンソールに出力
-		System.out.println(id);
+		request.setAttribute("id", id);
 
-
-		// TODO  未実装：idを引数にして、idに紐づくユーザ情報を出力する
-		UserDao userDao = new UserDao();	//インポートを追加
-		User user = userDao.findById(Integer.parseInt(id));	//インポートを追加
-
-		// TODO  未実装：ユーザ情報をリクエストスコープにセットしてjspにフォワード
-		request.setAttribute("user", user);
-		//インポートを追加
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userDetail.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserDelete.jsp");
 		dispatcher.forward(request, response);
-
 	}
-
 
 }

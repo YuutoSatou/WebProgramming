@@ -115,5 +115,55 @@ public class UserDao {
         }
         return userList;	//userListを返す。
     }
+
+    /**
+     * IDに紐づくユーザ情報を返す
+     * @param id
+     * @return
+     */
+    public User findById(int id) {
+        Connection conn = null;
+        try {
+            // データベースへ接続
+            conn = DBManager.getConnection();
+
+            // SELECT文を準備
+            String sql = "SELECT * FROM user WHERE id = ?";
+
+            // SELECTを実行し、結果表を取得
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, id);
+            ResultSet rs = pStmt.executeQuery();
+
+            // 主キーに紐づくレコードは1件のみなので、rs.next()は1回だけ行う
+            if (!rs.next()) {
+                return null;
+            }
+
+            int returnId = rs.getInt("id");
+            String loginId = rs.getString("login_id");
+            String name = rs.getString("name");
+            Date birthDate = rs.getDate("birth_date");
+            String password = ""; // 画面に表示しませんし、セキュリティ上の観点からもResultSetのパスワードはセットしないほうが良いのではないかと思います。
+            String updateDate = rs.getString("update_date");
+            String createDate = rs.getString("create_date");
+            return new User(returnId, loginId, name, birthDate, password, updateDate, createDate);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            // データベース切断
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        }
+    }
+
 }
 
