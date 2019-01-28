@@ -72,6 +72,7 @@
         </div>
       </div>
     </div>
+    <br><a href=UserListServlet>戻る</a>
     <!-- /body -->
   </body>
 </html>

@@ -18,7 +18,7 @@
 		<br>ユーザ名 <input type="text" name="UserName" id="UserName" class="form-control" placeholder="ユーザ名" required>
 		<br>生年月日 <input type="text" name="Birth" id="Birth" class="form-control" placeholder="生年月日" required>
 		<br><input type ="submit" value="更新">
-		<br>戻る
+		<br><a href=UserListServlet>戻る</a>
 
 	</body>
 </html>
