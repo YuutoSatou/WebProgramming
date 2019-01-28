@@ -30,7 +30,8 @@ public class UserDetailServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// URLからGETパラメータとしてIDを受け取る
 		String id = request.getParameter("id");
 
@@ -45,10 +46,8 @@ public class UserDetailServlet extends HttpServlet {
 		// TODO  未実装：ユーザ情報をリクエストスコープにセットしてjspにフォワード
 		request.setAttribute("user", user);
 		//インポートを追加
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userDetail.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserDetail.jsp");
 		dispatcher.forward(request, response);
 
 	}
-
-
 }

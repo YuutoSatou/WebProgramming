@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class DeleteScreen
+ * Servlet implementation class UserDeleteServlet
  */
 @WebServlet("/UserDeleteServlet")
 public class UserDeleteServlet extends HttpServlet {
@@ -21,17 +21,17 @@ public class UserDeleteServlet extends HttpServlet {
      */
     public UserDeleteServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// URLからGETパラメータとしてIDを受け取る
 		String id = request.getParameter("id");
 
-		request.setAttribute("id", id);
+		request.setAttribute("id", id); //idに変更した。
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserDelete.jsp");
 		dispatcher.forward(request, response);
