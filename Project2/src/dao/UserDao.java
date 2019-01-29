@@ -1,5 +1,9 @@
 package dao;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -8,6 +12,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
+
+//import javax.xml.bind.DatatypeConverter;
 
 import model.User;
 
@@ -165,5 +173,51 @@ public class UserDao {
         }
     }
 
+    public void userInsert(String id,String password,String name,String birth_date) {
+    	Connection conn = null;
+    	try {
+    		// データベースへ接続
+            conn = DBManager.getConnection();
+            //insert文を準備
+            String sql = "INSERT INTO user(login_id,password,name,birth_date,create_date,update_date)VALUES(?,?,?,?now(),now());";
+            //INSERTを実行
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            //ハッシュを生成したい元の文字列
+            String source = password;			//パスワードを隠す処理。
+            //ハッシュ生成前にバイト配列に置き換える際のCharset
+            Charset charset = StandardCharsets.UTF_8;
+            //ハッシュアルゴリズム
+            String algorithm= "MD5";
+          //ハッシュ生成処理
+            byte[] bytes = MessageDigest.getInstance(algorithm).digest(source.getBytes(charset));
+            String result = DatatypeConverter.printHexBinary(bytes);
+
+            stmt.setString(1,id);
+            stmt.setString(2,result);
+            stmt.setString(3,name);
+            stmt.setString(4,birth_date);
+
+            stmt.executeUpdate();
+            stmt.close();
+
+
+
+
+    		} catch (SQLException | NoSuchAlgorithmException e){
+            e.printStackTrace();
+    		 } finally {
+    	            // データベース切断
+    	            if (conn != null) {
+    	                try {
+    	                	conn.close();
+    	                }catch(SQLException e){
+    	                	e.printStackTrace();
+    	                }
+            //return null;
+
+    	}
+    }
+}
 }
 

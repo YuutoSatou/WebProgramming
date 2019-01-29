@@ -29,6 +29,8 @@
 	<div style="padding: 10px; margin-bottom: 10px; border: 1px solid #333333; background-color: #999999; color: #ffffff;">
 	</div>
 		<h1>ユーザ新規登録</h1>
+		<form method="post" action="UserNewEntryServlet">
+
 		<br>ログインID <input type="text" name="loginId" id="inputLoginId" class="form-control" placeholder="ログインID" required autofocus>
 		<br>パスワード <input type="password" name="password" id="inputPassword" class="form-control" placeholder="パスワード" required>
 		<br>パスワード確認 <input type="text" name="PasswordConfirmation" id="inputPassword" class="form-control" placeholder="パスワード確認" required>
@@ -36,6 +38,7 @@
 		<br>生年月日 <input type="text" name="Birth" id="Birth" class="form-control" placeholder="生年月日" required>
 		<br><input type ="submit" value="登録">
 		<br><a href=UserListServlet>戻る</a>
+		</form>
 
 	</body>
 </html>

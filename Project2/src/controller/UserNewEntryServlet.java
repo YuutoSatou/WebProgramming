@@ -31,5 +31,22 @@ public class UserNewEntryServlet extends HttpServlet {
 			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserNewEntry.jsp");
 		dispatcher.forward(request, response);
+
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException{
+		 // リクエストパラメータの文字コードを指定
+        request.setCharacterEncoding("UTF-8");
+
+		// リクエストパラメータの入力項目を取得
+		String loginId = request.getParameter("loginId");
+		String password = request.getParameter("password");
+		String name = request.getParameter("name");
+		String birth_date = request.getParameter("birth_date");
+		String password2 = request.getParameter("password2");
+
+
+
+
 	}
 }
