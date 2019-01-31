@@ -13,8 +13,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.DatatypeConverter;
-
 //import javax.xml.bind.DatatypeConverter;
 
 import model.User;
@@ -172,7 +170,7 @@ public class UserDao {
 		}
 	}
 
-	public void userInsert(String id, String password, String name, String birth_date) {
+	public void userInsert(String id, String password, String password2, String name, String birth_date) {
 		Connection conn = null;
 		try {
 			// データベースへ接続
@@ -190,10 +188,11 @@ public class UserDao {
 			String algorithm = "MD5";
 			//ハッシュ生成処理
 			byte[] bytes = MessageDigest.getInstance(algorithm).digest(source.getBytes(charset));
-			String result = DatatypeConverter.printHexBinary(bytes);
+			//コメントアウト
+			//String result = DatatypeConverter.printHexBinary(bytes);
 
 			stmt.setString(1, id);
-			stmt.setString(2, result);
+			stmt.setString(2, password);
 			stmt.setString(3, name);
 			stmt.setString(4, birth_date);
 
@@ -216,41 +215,42 @@ public class UserDao {
 		}
 	}
 
-	public User searchByLoginId(String loginId) {
-		Connection conn = null;
-		try {
-			//データベースへ接続
-			conn = DBManager.getConnection();
-			// SELECT文を準備
-			String sql = "SELECT * FROM user WHERE loginId = ?";
-			// SELECTを実行し、結果表を取得
-			PreparedStatement pStmt = conn.prepareStatement(sql);
-			pStmt.setString(1, loginId);
-			ResultSet rs = pStmt.executeQuery();
-			//主キーに紐づくレコードは１件のみなので、rs.next()は１回だけ行う
-			if (!rs.next()) {
-				return null;
-			}
-			String loginIdData = rs.getString("login_id");
-			if (loginIdData == null) {
-				return null;
-			} else {
-				return new User(loginIdData);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			//データベース切断
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return null;
-				}
-			}
-		}
-	}
+//「更新」ボタンで使用するため、コメントアウト。
+//	public User searchByLoginId(String loginId) {
+//		Connection conn = null;
+//		try {
+//			//データベースへ接続
+//			conn = DBManager.getConnection();
+//			// SELECT文を準備
+//			String sql = "SELECT * FROM user WHERE loginId = ?";
+//			// SELECT文を実行し、結果表を取得
+//			PreparedStatement pStmt = conn.prepareStatement(sql);
+//			pStmt.setString(1, loginId);
+//			ResultSet rs = pStmt.executeQuery();
+//			//主キーに紐づくレコードは１件のみなので、rs.next()は１回だけ行う
+//			if (!rs.next()) {
+//				return null;
+//			}
+//			String loginIdData = rs.getString("login_id");
+//			if (loginIdData == null) {
+//				return null;
+//			} else {
+//				return new User(loginIdData);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			return null;
+//		} finally {
+//			//データベース切断
+//			if (conn != null) {
+//				try {
+//					conn.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//					return null;
+//				}
+//			}
+//		}
+//	}
 
 }

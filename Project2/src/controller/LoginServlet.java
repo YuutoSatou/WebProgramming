@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
 		// TODO 未実装：ログインセッションがある場合、ユーザ一覧画面にリダイレクトさせる
 
 		// フォワード
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/index.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/LoginScreen.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -56,8 +56,8 @@ public class LoginServlet extends HttpServlet {
 
 		// リクエストパラメータの入力項目を引数に渡して、Daoのメソッドを実行
 		UserDao userDao = new UserDao();	//インスタンス
+		//DaoのfindByLoginInfoメソッドでログインＩＤとパスワードを検索。
 		User user = userDao.findByLoginInfo(loginId, password);
-		//ログインＩＤとパスワードを検索。
 
 		/** テーブルに該当のデータが見つからなかった場合 **/
 		if (user == null) {		//userがnull(空白)だったとき
@@ -66,7 +66,7 @@ public class LoginServlet extends HttpServlet {
 			//クラスの属性に値を格納するメソッド。
 
 			// ログインjspにフォワード
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/index.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/LoginScreen.jsp");
 			dispatcher.forward(request, response);
 			return;
 		}
