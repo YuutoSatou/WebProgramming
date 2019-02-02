@@ -4,12 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="style.css">
-<title>title</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css">
+	<title>title</title>
 </head>
 <body>
-	<!-- header -->
 	<header>
 		<nav class="navbar navbar-inverse">
 			<div class="container">
@@ -25,7 +24,6 @@
 			</div>
 		</nav>
 	</header>
-	<!-- /header -->
 	<div
 		style="padding: 10px; margin-bottom: 10px; border: 1px solid #333333; background-color: #999999; color: #ffffff;">
 	</div>
@@ -34,10 +32,12 @@
 		<br>ログインID <input type="text" name="loginId" id="inputLoginId"
 			class="form-control" placeholder="ログインID" required autofocus>
 		<br>パスワード <input type="password" name="password"
-			id="inputPassword" class="form-control" placeholder="パスワード" required>
+			id="inputPassword" class="form-control" placeholder="パスワード"
+			required>
 		<br>パスワード確認 <input type="text" name="password2"
 			id="inputPassword" class="form-control" placeholder="パスワード確認"
-			required> <br>ユーザ名 <input type="text" name="UserName"
+			required>
+		<br>ユーザ名 <input type="text" name="UserName"
 			id="UserName" class="form-control" placeholder="ユーザ名" required>
 		<br>生年月日 <input type="text" name="Birth" id="Birth"
 			class="form-control" placeholder="生年月日" required> <br>

@@ -12,13 +12,20 @@
     ユーザ名 さん     <font color="RED">ログアウト</font>
 	</div>
 		<h1>ユーザ情報更新</h1>
-		<br>ログインID id0001
-		<br>パスワード <input type="password" name="password" id="inputPassword" class="form-control" placeholder="パスワード" required>
-		<br>パスワード確認 <input type="text" name="PasswordConfirmation" id="inputPassword" class="form-control" placeholder="パスワード確認" required>
-		<br>ユーザ名 <input type="text" name="UserName" id="UserName" class="form-control" placeholder="ユーザ名" required>
-		<br>生年月日 <input type="text" name="Birth" id="Birth" class="form-control" placeholder="生年月日" required>
-		<br><input type ="submit" value="更新">
-		<br><a href=UserListServlet>戻る</a>
-
+		<form action="UserUpdateServlet" method="post">
+		<br>ログインID <input type="text" name="loginId" id="inputLoginId"
+			class="form-control" placeholder="ログインID" required autofocus value="${user.loginId}">
+		<br>パスワード <input type="password" name="password"
+			id="inputPassword" class="form-control" placeholder="パスワード"
+			required>
+		<br>パスワード確認 <input type="text" name="password2"
+			id="inputPassword" class="form-control" placeholder="パスワード確認"
+			required>
+		<br>ユーザ名 <input type="text" name="UserName"
+			id="UserName" class="form-control" placeholder="ユーザ名" required>
+		<br>生年月日 <input type="text" name="Birth" id="Birth"
+			class="form-control" placeholder="生年月日" required> <br>
+			 <a href=UserListServlet>戻る</a><input type="submit" value="更新">
+	</form>
 	</body>
 </html>

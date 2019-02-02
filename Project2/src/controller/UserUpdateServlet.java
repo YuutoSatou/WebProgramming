@@ -56,9 +56,6 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -74,7 +71,7 @@ import model.User;
 	/**
 	 * Servlet implementation class infoUpdate
 	 */
-	@WebServlet("/UserUpdate")
+	@WebServlet("/UserUpdateServlet")
 	public class UserUpdateServlet extends HttpServlet {
 		private static final long serialVersionUID = 1L;
 
@@ -92,27 +89,27 @@ import model.User;
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			// TODO Auto-generated method stub
 
-			//?????????????????????????????
+			//ログインをしているかしていないかのチェックをする。
 			HttpSession session = request.getSession();
 
-			if(session.getAttribute("users") == null) {
-				response.sendRedirect("login");
+			if(session.getAttribute("userInfo") == null) {
+				response.sendRedirect("LoginServlet");
 				return;
 			}
 
-			 // リクエストパラメータの文字コードを指定
-			request.setCharacterEncoding("UTF-8");
-
+			// URLからGETパラメータとしてIDを受け取る
 			String id = request.getParameter("id");
 
-			UserDao userDao = new UserDao();
-			User userInfo = userDao.findUserById(id);
+			// TODO  未実装：idを引数にして、idに紐づくユーザ情報を出力する
+			UserDao userDao = new UserDao();	//インポートを追加
+			User user = userDao.findById(Integer.parseInt(id));	//インポートを追加
 
-			request.setAttribute("user", userInfo);
+			// TODO  未実装：ユーザ情報をリクエストスコープにセットしてjspにフォワード
+			request.setAttribute("user", user);
+
 
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserUpdate.jsp");
 			dispatcher.forward(request,  response);
-
 		}
 
 		/**
@@ -123,99 +120,20 @@ import model.User;
 			// リクエストパラメータの文字コードを指定
 			request.setCharacterEncoding("UTF-8");
 
-			//パラメータ
+			//リクエストパラメータを取得
+			String loginId = request.getParameter("loginId");
 			String password = request.getParameter("password");
 			String password2 = request.getParameter("password2");
-			String name = request.getParameter("name");
-			String birth_date = request.getParameter("birth_date");
-			String loginId = request.getParameter("loginId");
+			String name = request.getParameter("UserName");
+			String birth_date = request.getParameter("Birth");
 
+			//userUpdateメソッドを呼び出す。
 			UserDao userDao = new UserDao();
+			userDao.userUpdate(loginId, password, name, birth_date);
 
-			/** ???????????(??)??????????? **/
-			if(!password.equals(password2)) {
-				//エラーメッセージ
-				request.setAttribute("errMsg","???????????????");
-
-				User user = new User();
-				user.setLoginId(loginId);
-				user.setName(name);
-				try {
-					user.setBirthDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(birth_date).getTime()));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-
-				request.setAttribute("user", user);
-
-				//新規登録jspにフォワード
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/infoUpdate.jsp");
-				dispatcher.forward(request, response);
-				return;
-			}
-
-			/** ??????????????????? **/
-
-			if(name.isEmpty() || birth_date.isEmpty()) {
-				//エラーメッセージ
-				request.setAttribute("errMsg","????????????????");
-
-				User user = new User();
-				user.setLoginId(loginId);
-				user.setName(name);
-				try {
-					user.setBirthDate(new Date(new SimpleDateFormat("yyyy-MM-dd").parse(birth_date).getTime()));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-
-				request.setAttribute("user", user);
-
-
-				//新規登録jspにフォワード
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/infoUpdate.jsp");
-				dispatcher.forward(request, response);
-				return;
-			}
-
-			if(password.isEmpty() && password2.isEmpty()) {
-				//Dao
-				userDao.updateInsert(name, birth_date, loginId);
-
-			}else {
-
-			//Dao
-			userDao.userUpdate(password, name, birth_date, loginId);
-			}
-
-			// GET
-			response.sendRedirect("users");
+			// ユーザ一覧のサーブレットにリダイレクト
+			response.sendRedirect("UserListServlet");
 
 		}
 
 	}
-
-
-
-
-
-
-
-
-
-//	/**
-//	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-//	 */
-//	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		// TODO Auto-generated method stub
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
-//	}
-//
-//	/**
-//	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-//	 */
-//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		// TODO Auto-generated method stub
-//		doGet(request, response);
-//	}
-//}

@@ -1,3 +1,4 @@
+//2019/2/2 更新
 package dao;
 
 import java.nio.charset.Charset;
@@ -169,14 +170,14 @@ public class UserDao {
 			}
 		}
 	}
-
+	//登録ボタンのメソッド
 	public void userInsert(String id, String password, String password2, String name, String birth_date) {
 		Connection conn = null;
 		try {
 			// データベースへ接続
 			conn = DBManager.getConnection();
-			//insert文を準備
-			String sql = "INSERT INTO user(login_id,password,name,birth_date,create_date,update_date)VALUES(?,?,?,?now(),now());";
+			//insert文を準備(修正2019/2/2)
+			String sql = "INSERT INTO user(login_id,password,name,birth_date,create_date,update_date)VALUES(?,?,?,?,now(),now());";
 			//INSERTを実行
 			PreparedStatement stmt = conn.prepareStatement(sql);
 
@@ -195,6 +196,52 @@ public class UserDao {
 			stmt.setString(2, password);
 			stmt.setString(3, name);
 			stmt.setString(4, birth_date);
+
+			stmt.executeUpdate();
+			stmt.close();
+
+		} catch (SQLException | NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} finally {
+			// データベース切断
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				//return null;
+
+			}
+		}
+	}
+	//更新ボタンのメソッド
+	public void userUpdate(String id, String password, String name, String birth_date) {
+		Connection conn = null;
+		try {
+			// データベースへ接続
+			conn = DBManager.getConnection();
+			//insert文を準備(修正2019/2/2)
+			String sql = "UPDATE user set password=?,name=?,birth_date=?,update_date=now() where login_id=?;";
+			//INSERTを実行
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			//ハッシュを生成したい元の文字列
+			String source = password; //パスワードを隠す処理。
+			//ハッシュ生成前にバイト配列に置き換える際のCharset
+			Charset charset = StandardCharsets.UTF_8;
+			//ハッシュアルゴリズム
+			String algorithm = "MD5";
+			//ハッシュ生成処理
+			byte[] bytes = MessageDigest.getInstance(algorithm).digest(source.getBytes(charset));
+			//コメントアウト
+			//String result = DatatypeConverter.printHexBinary(bytes);
+
+			//修正済み2019/2/2
+			stmt.setString(1, password);
+			stmt.setString(2, name);
+			stmt.setString(3, birth_date);
+			stmt.setString(4, id);
 
 			stmt.executeUpdate();
 			stmt.close();

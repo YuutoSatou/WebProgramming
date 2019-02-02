@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.UserDao;
+
 /**
  * Servlet implementation class UserNewEntryServlet
  */
@@ -27,11 +29,13 @@ public class UserNewEntryServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+
+	//doGetとdoPostの両方が必要である。
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserNewEntry.jsp");
 		dispatcher.forward(request, response);
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -39,32 +43,69 @@ public class UserNewEntryServlet extends HttpServlet {
 		// リクエストパラメータの文字コードを指定
 		request.setCharacterEncoding("UTF-8");
 
-		// リクエストパラメータの入力項目を取得
+		// リクエストパラメータを取得 (修正済み2019/2/1)
 		String loginId = request.getParameter("loginId");
 		String password = request.getParameter("password");
-		String name = request.getParameter("name");
-		String birth_date = request.getParameter("birth_date");
 		String password2 = request.getParameter("password2");
+		String name = request.getParameter("UserName");
+		String birth_date = request.getParameter("Birth");
 
-		if (!password.equals(password2)) {
-			//リクエストスコープにエラーメッセージをセット
-			request.setAttribute("errMsg", "パスワードが一致しておりません");
-			//新規登録jspにフォワード
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserNewEntry.jsp");
-			dispatcher.forward(request, response);
-			return;
+		//ＪＳＰのnameと、この部分のgetParameterの文字列を一致させること。
+
+		//リクエストパラメータをチェック
+		String errorMsg = "";
+		if (name == null || loginId.length() == 0) {
+			System.out.println("ログインＩＤが入力されていません");
 		}
-		//入力項目に一つでも未入力のものがある場合の登録失敗仕様
-		if (loginId.isEmpty() || password.isEmpty() || name.isEmpty() || birth_date.isEmpty() || password2.isEmpty()) {
-			//リクエストスコープにエラーメッセージをセット
-			request.setAttribute("errMsg", "入力項目に未入力のものがあります");
-			//新規登録jspにフォワード
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserNewEntry.jsp");
-			dispatcher.forward(request, response);
-			return;
+
+		if (name == null || password.length() == 0) {
+			System.out.println("パスワードが入力されていません");
 		}
+
+		if (name == null || password2.length() == 0) {
+			System.out.println("確認用パスワードが入力されていません");
+		}
+
+		if (name == null || name.length() == 0) {
+			System.out.println("名前が入力されていません");
+		}
+
+		if (name == null || birth_date.length() == 0) {
+			System.out.println("誕生日が入力されていません");
+		}
+		UserDao userDao = new UserDao();
+		userDao.userInsert(loginId, password, password2, name, birth_date);//Ctrl＋スペース
+
+
+		// ユーザ一覧のサーブレットにリダイレクト
+		response.sendRedirect("UserListServlet");
+
 	}
 }
+
+//★DAOのログインメソッドと動作が同じである。
+
+
+
+//		if (!password.equals(password2)) {
+//			//リクエストスコープにエラーメッセージをセット
+//			request.setAttribute("errMsg", "パスワードが一致しておりません");
+//			//新規登録jspにフォワード
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserNewEntry.jsp");
+//			dispatcher.forward(request, response);
+//			return;
+//		}
+//		//入力項目に一つでも未入力のものがある場合の登録失敗仕様
+//		if (loginId.isEmpty() || password.isEmpty() || name.isEmpty() || birth_date.isEmpty() || password2.isEmpty()) {
+//			//リクエストスコープにエラーメッセージをセット
+//			request.setAttribute("errMsg", "入力項目に未入力のものがあります");
+//			//新規登録jspにフォワード
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/UserNewEntry.jsp");
+//			dispatcher.forward(request, response);
+//			return;
+//		}
+
+
 //	searchByLoginIdメソッドは、UserDao.javaで未作成。
 //
 //	//既に登録されているログインIDが入力された場合の登録失敗仕様
