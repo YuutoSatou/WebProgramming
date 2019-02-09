@@ -1,4 +1,4 @@
-//2019/2/2 更新
+//2019/2/7 更新(userDeleteメソッドを追記した。)
 package dao;
 
 import java.nio.charset.Charset;
@@ -261,6 +261,55 @@ public class UserDao {
 			}
 		}
 	}
+	//削除ボタンのメソッド
+		public void userDelete(String id) {
+			Connection conn = null;
+			try {
+				// データベースへ接続
+				conn = DBManager.getConnection();
+
+				//DELETE文を準備(修正2019/2/7)DELETE文の基礎文法はわかったが、この部分がわからない。
+				String sql = "DELETE FROM user WHERE login_id=?;";
+
+				//宣言の準備
+				PreparedStatement stmt = conn.prepareStatement(sql);
+
+//				//ハッシュを生成したい元の文字列
+//				String source = password; //パスワードを隠す処理。
+//				//ハッシュ生成前にバイト配列に置き換える際のCharset
+//				Charset charset = StandardCharsets.UTF_8;
+//				//ハッシュアルゴリズム
+//				String algorithm = "MD5";
+//				//ハッシュ生成処理
+//				byte[] bytes = MessageDigest.getInstance(algorithm).digest(source.getBytes(charset));
+
+				//セットストリング　
+				stmt.setString(1, id);
+//				stmt.setString(2, password);
+//				stmt.setString(3, name);
+//				stmt.setString(4, birth_date);
+
+				stmt.executeUpdate();
+				stmt.close();
+
+				//「もしくは」を削除する。
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				// データベース切断
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					//return null;
+
+				}
+			}
+		}
+
+
 
 //「更新」ボタンで使用するため、コメントアウト。
 //	public User searchByLoginId(String loginId) {
