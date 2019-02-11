@@ -1,4 +1,4 @@
-//2019/2/7 更新(userDeleteメソッドを追記した。)
+//2019/2/9 更新(userDeleteメソッドを実装した。)
 package dao;
 
 import java.nio.charset.Charset;
@@ -308,45 +308,76 @@ public class UserDao {
 				}
 			}
 		}
+		/**
+		 * 全てのユーザ情報を取得する
+		 * @return
+		 */
+		public List<User> userSearch(String idSearch, String nameSearch, String birth_date_start, String birth_date_end) {
+			Connection conn = null;
+			List<User> userList = new ArrayList<User>();
+
+			try {
+				// データベースへ接続
+				conn = DBManager.getConnection();
+
+				// SELECT文を準備
+				String sql = "SELECT * FROM user WHERE login_id = ?"
+				+ "and name like ? "
+				+ "and birth_date between ? and ?";
+
+				// SELECTを実行し、結果表を取得
+				PreparedStatement pStmt = conn.prepareStatement(sql);
+				pStmt.setString(1, idSearch);
+				pStmt.setString(2, "%" + nameSearch + "%");
+				pStmt.setString(3, birth_date_start);
+				pStmt.setString(4, birth_date_end);
+				ResultSet rs = pStmt.executeQuery();
+//				// データベースへ接続
+//				conn = DBManager.getConnection();
+//
+//				// SELECT文を準備
+//				// TODO: 未実装：管理者以外を取得するようSQLを変更する
+//				String sql = "SELECT * FROM user where login_id = ?";
+////						+ "and name like ? ";
+////						+ "and birth_date between ? and ?";
+//
+//				// SELECTを実行し、結果表を取得
+//				PreparedStatement stmt = conn.prepareStatement(sql); //stmtを定義
+//				stmt.setString(1, idSearch);
+//				//クエリを実行
+//				ResultSet rs = stmt.executeQuery(sql); //rsを定義
+
+				// 結果表に格納されたレコードの内容を
+				// Userインスタンスに設定し、ArrayListインスタンスに追加
+				while (rs.next()) {
+					int id = rs.getInt("id");
+					String loginId = rs.getString("login_id");
+					String name = rs.getString("name");
+					Date birthDate = rs.getDate("birth_date");
+					String password = rs.getString("password");
+					String createDate = rs.getString("create_date");
+					String updateDate = rs.getString("update_date");
+					User user = new User(id, loginId, name, birthDate, password, createDate, updateDate);
+
+					userList.add(user);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			} finally {
+				// データベース切断
+				if (conn != null) {
+					try {
+						conn.close(); //切断処理
+					} catch (SQLException e) {
+						e.printStackTrace();
+						return null;
+					}
+				}
+			}
+			return userList; //userListを返す。
+		}
 
 
-
-//「更新」ボタンで使用するため、コメントアウト。
-//	public User searchByLoginId(String loginId) {
-//		Connection conn = null;
-//		try {
-//			//データベースへ接続
-//			conn = DBManager.getConnection();
-//			// SELECT文を準備
-//			String sql = "SELECT * FROM user WHERE loginId = ?";
-//			// SELECT文を実行し、結果表を取得
-//			PreparedStatement pStmt = conn.prepareStatement(sql);
-//			pStmt.setString(1, loginId);
-//			ResultSet rs = pStmt.executeQuery();
-//			//主キーに紐づくレコードは１件のみなので、rs.next()は１回だけ行う
-//			if (!rs.next()) {
-//				return null;
-//			}
-//			String loginIdData = rs.getString("login_id");
-//			if (loginIdData == null) {
-//				return null;
-//			} else {
-//				return new User(loginIdData);
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			return null;
-//		} finally {
-//			//データベース切断
-//			if (conn != null) {
-//				try {
-//					conn.close();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//					return null;
-//				}
-//			}
-//		}
-//	}
 
 }

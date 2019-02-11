@@ -53,7 +53,7 @@
                 <div class="panel-title">検索条件</div>
             </div>
             <div class="panel-body">
-              <form method="post" action="#" class="form-horizontal">
+              <form method="post" action="UserListServlet" class="form-horizontal">
                 <div class="form-group">
                   <label for="code" class="control-label col-sm-2">ログインID</label>
                   <div class="col-sm-6">
