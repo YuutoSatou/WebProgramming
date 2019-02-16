@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
@@ -19,17 +20,18 @@
     <!-- header -->
     <header>
       <nav class="navbar navbar-inverse">
-        <div class="container">
-          <div class="navbar-header">
+      	<div class="container">
+      		<div class="navbar-header">
             <a class="navbar-brand" href="userCreate.html">ユーザ管理システム</a>
-          </div>
+      		</div>
+
           <ul class="nav navbar-nav navbar-right">
             <li class="navbar-text">${userInfo.name} さん </li>
-            <li class="dropdown">
-              <a href="LogoutServlet" class="navbar-link logout-link">ログアウト</a>
+  			<li class="dropdown">
+  			  <a href="LogoutServlet" class="navbar-link logout-link">ログアウト</a>
             </li>
-          </ul>
-        </div>
+  		  </ul>
+      	</div>
       </nav>
     </header>
     <!-- /header -->
@@ -38,31 +40,31 @@
       <div class="panel-body">
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="form-group">
+            <div class="form-group row">
               <label for="code" class="control-label col-sm-2">ログインID</label>
               <div class="col-sm-6">
                 ${user.loginId}
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
               <label for="name" class="control-label col-sm-2">ユーザ名</label>
               <div class="col-sm-6">
                 ${user.name}
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
               <label for="continent" class="control-label col-sm-2">生年月日</label>
               <div class="col-sm-6">
                 ${user.birthDate}
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
               <label for="continent" class="control-label col-sm-2">登録日時</label>
               <div class="col-sm-6">
                 ${user.createDate}
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
               <label for="continent" class="control-label col-sm-2">更新日時</label>
               <div class="col-sm-6">
                 ${user.updateDate}
