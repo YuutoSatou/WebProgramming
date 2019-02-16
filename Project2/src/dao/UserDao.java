@@ -312,6 +312,7 @@ public class UserDao {
 		 * 全てのユーザ情報を取得する
 		 * @return
 		 */
+		//userSeachメソッド（部分一致にも対応）
 		public List<User> userSearch(String idSearch, String nameSearch, String birth_date_start, String birth_date_end) {
 			Connection conn = null;
 			List<User> userList = new ArrayList<User>();
@@ -320,32 +321,65 @@ public class UserDao {
 				// データベースへ接続
 				conn = DBManager.getConnection();
 
-				// SELECT文を準備
-				String sql = "SELECT * FROM user WHERE login_id = ?"
-				+ "and name like ? "
-				+ "and birth_date between ? and ?";
+				// SELECT文を準備(2019/2/16)
+				String sql = "SELECT * FROM user WHERE 1=1 ";
+//				+ "and name like ? "
+//				+ "and birth_date between ? and ?";
+
+			//if文を追加(2019/2/16)
+			//検索条件の「ログインＩＤ」が空文字でない場合は(332行目)
+			//ＳＱＬに検索条件を追加する。(333行目)
+				if(!"".equals(idSearch)){
+					sql = sql + "and login_id = ?";
+				}
+
+				if(!"".equals(nameSearch)){
+					sql = sql + "and name like ? ";
+				}
+				//開始が入っていて、終了が入っていない場合
+				if(!"".equals(birth_date_start) && "".equals(birth_date_end)){
+					sql = sql + "and birth_date >= ?";
+				}
+				//終了が入っていて、開始が入っていない場合
+				if("".equals(birth_date_start) && !"".equals(birth_date_end)){
+					sql = sql + "and birth_date <= ?";
+				}
+
+				if(!"".equals(birth_date_start) && !"".equals(birth_date_end)){
+					sql = sql +  "and birth_date between ? and ?";
+				}
+
 
 				// SELECTを実行し、結果表を取得
 				PreparedStatement pStmt = conn.prepareStatement(sql);
-				pStmt.setString(1, idSearch);
-				pStmt.setString(2, "%" + nameSearch + "%");
-				pStmt.setString(3, birth_date_start);
-				pStmt.setString(4, birth_date_end);
+
+				//検索条件が空文字の場合は、
+				//パラメータをセットしないので、インデックスを変数で保持しておき、
+				//パラメータをセットする直前でインクリメントする。(2019/2/16)
+				int i = 0;
+				if(!"".equals(idSearch)){
+				    i++;
+				    pStmt.setString(i, idSearch);
+				}
+				if(!"".equals(nameSearch)){
+				    i++;
+				    pStmt.setString(i, "%" + nameSearch + "%");
+				}
+				if(!"".equals(birth_date_start) && "".equals(birth_date_end)){
+					i++;
+			    	pStmt.setString(i, birth_date_start);
+				}
+				if("".equals(birth_date_start) && !"".equals(birth_date_end)){
+					i++;
+			    	pStmt.setString(i, birth_date_end);
+				}
+
+
+//				pStmt.setString(1, idSearch);
+//				pStmt.setString(2, "%" + nameSearch + "%");
+//				pStmt.setString(3, birth_date_start);
+//				pStmt.setString(4, birth_date_end);
 				ResultSet rs = pStmt.executeQuery();
-//				// データベースへ接続
-//				conn = DBManager.getConnection();
-//
-//				// SELECT文を準備
-//				// TODO: 未実装：管理者以外を取得するようSQLを変更する
-//				String sql = "SELECT * FROM user where login_id = ?";
-////						+ "and name like ? ";
-////						+ "and birth_date between ? and ?";
-//
-//				// SELECTを実行し、結果表を取得
-//				PreparedStatement stmt = conn.prepareStatement(sql); //stmtを定義
-//				stmt.setString(1, idSearch);
-//				//クエリを実行
-//				ResultSet rs = stmt.executeQuery(sql); //rsを定義
 
 				// 結果表に格納されたレコードの内容を
 				// Userインスタンスに設定し、ArrayListインスタンスに追加
@@ -375,9 +409,7 @@ public class UserDao {
 					}
 				}
 			}
-			return userList; //userListを返す。
-		}
-
-
-
+			//userListを返す。
+			return userList;
+	}
 }
