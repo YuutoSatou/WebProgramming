@@ -42,6 +42,7 @@
 	<!-- /header -->
 <body>
 	<h1>ユーザ情報更新</h1>
+	<div class="container">
 	<form action="UserUpdateServlet" method="post">
 		<br>ログインID <input type="text" name="loginId" id="inputLoginId"
 			class="form-control" placeholder="ログインID" required autofocus
@@ -56,5 +57,6 @@
 			required> <br> <a href=UserListServlet>戻る</a><input
 			type="submit" value="更新">
 	</form>
+	</div>
 </body>
 </html>

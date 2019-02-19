@@ -39,11 +39,13 @@
 	</header>
 	<!-- /header -->
 	<h1>ユーザ削除確認</h1>
+	<div class="container">
 	<form action="UserDeleteServlet" method="post">
 		<br>ログインID <input type="text" name="loginId" id="inputLoginId"
 			class="form-control" placeholder="ログインID" required autofocus
 			value="${user.loginId}"> <br>を本当に削除してよろしいでしょうか。 <br>
 		<a href=UserListServlet>キャンセル</a> <input type="submit" value="削除">
 	</form>
+	</div>
 </body>
 </html>
